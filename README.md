@@ -29,7 +29,7 @@ The important design choice is that the assistant is **not** a generic chatbot b
 | Persistence | Done | SQLite with `analyses`, `plates`, `chat_sessions`, `chat_messages`. |
 | Demo data | Done | Clearly labelled `source='demo'` rows for an explorable first run. |
 | Tests | Done | Service, RAG, assistant, pipeline (fake detector/reader) and API contract tests. |
-| Documentation | Done | Architecture, API, capstone report, demo script and viva notes. |
+
 
 ---
 
@@ -41,12 +41,8 @@ The important design choice is that the assistant is **not** a generic chatbot b
 - [`docs/TRAINING_PLAYBOOK.md`](docs/TRAINING_PLAYBOOK.md) — local restoration and character-detector training.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — pipeline and data flow.
 - [`docs/API.md`](docs/API.md) — endpoint reference.
-- [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md) — full report.
-- [`docs/AutoGuard_AI_Capstone_Report.pdf`](docs/AutoGuard_AI_Capstone_Report.pdf) — printable PDF of the report.
 - [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) — demo walkthrough.
-- [`docs/VIVA_QUESTIONS.md`](docs/VIVA_QUESTIONS.md) — viva preparation.
 
-Rebuild the PDF after editing the report Markdown (uses the locally installed Chrome, no extra Python packages):
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\build_report_pdf.py
@@ -57,7 +53,7 @@ node scripts\print_report_pdf.mjs
 
 ## Screens and workflow
 
-Five task-based views share a gradient top navigation and a page header. A command palette (`Ctrl/Cmd + K`) jumps to any view, reading or action; `G` then `S/R/A/I/C` navigates; a light/dark toggle and a per-plate evidence dossier are available everywhere. Every view fits a 1440 × 1000 desktop at 100% zoom, and scan, review, gate and training-data also fit 1440 × 900.
+Five task-based views share a gradient top navigation and a page header. A command palette (`Ctrl/Cmd + K`) jumps to any view, reading or action; `G` then `S/R/A/I/C` navigates; a light/dark toggle and a per-plate evidence dossier are available everywhere. 
 
 **Scan desk (`#/scan`)**
 
