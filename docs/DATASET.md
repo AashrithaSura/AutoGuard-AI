@@ -59,11 +59,11 @@ Output lives in `data/iurs_plates/` (`crops/`, `ocr/train|val|test.csv`, `summar
 | Two-line plates (rows) | 74 (148 rows) |
 | Unique plate texts | 546 |
 
-An audit found **no plate text shared** between these splits and the original `prepared_corrected` splits, so the two sources can be combined without leakage. `scripts/combine_ocr_datasets.py` writes the combined manifests to `data/combined_ocr/`.
+An audit found **no full plate text shared** between these splits and the original `prepared_corrected` splits (0 overlap), so the two sources can be combined without full-label leakage. Within IURS, eight test rows are degenerate fragments (`GJ01`, `GJ01T`, `GJ18`, `GJ27T`) that also occur in IURS training; they stay in the 110-crop domain check. `scripts/combine_ocr_datasets.py` writes the combined manifests to `data/combined_ocr/`.
 
 ### Is it useful?
 
-It is character-level supervision for the *recogniser*, not a plate-level benchmark: its labels come from character boxes, and the crops are mostly clean frontal plates, so accuracy on it would overstate real-world performance. It is used only as extra training material, and the model is selected and reported on the original plate-level splits.
+It is character-level supervision for the *recogniser*, not a plate-level benchmark: its labels come from character boxes, and the crops are mostly clean frontal plates, so accuracy on it would overstate real-world performance. It is used as extra training material; the model is selected on the original validation split and reported on the original plate-level test split. The 110 IURS rows are reported as a within-source domain check, not an independent benchmark.
 
 ## 3. External datasets evaluated and not used
 

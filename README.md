@@ -6,6 +6,8 @@ AutoGuard AI is a still-image Indian ANPR capstone. It detects number plates wit
 
 The important design choice is that the assistant is **not** a generic chatbot bolted onto a detector. It answers from the same SQLite database that powers the console, and it retrieves explanations from the project's own Markdown knowledge base. An LLM is optional; the system remains useful offline without one.
 
+> **Capstone prototype, not production-ready.** The internal test split was inspected during development, so the headline numbers are development estimates. On the 165-crop test set, 41.8% of readings go to human review and 7.3% of auto-passed readings are still wrong. See [Evaluation](#evaluation-measured-with-caveats) and the [report](docs/AutoGuard_AI_Capstone_Report.pdf).
+
 ![AutoGuard AI scan desk](docs/screenshots/scan.png)
 
 ---
@@ -152,7 +154,15 @@ py -3.11 -m venv .venv
 
 ### 2. Add the model checkpoints
 
-Trained weights are binary and are not committed. Copy `plate_ocr.pth` and `plate_detector.pt` into `models/`; without them the app falls back to pretrained EasyOCR and YOLOv8n, which read Indian plates poorly. The training and rollback sections below reproduce both checkpoints.
+Trained weights are binary and are not committed. Copy them into `models/` and verify them against these checksums:
+
+| File | Bytes | SHA-256 | Role |
+|---|---:|---|---|
+| `plate_detector.pt` | 6,218,154 | `392f8ec03a667abfdf7f23e245e929d333aa558d0daf9dfb625ed2e48da9f0f6` | YOLOv8n plate detector (required) |
+| `plate_ocr.pth` | 15,145,561 | `24aaafdd54284a598ec99f4e084a4e70636cddc1e2cb3ff726f4cbecd8299d06` | EasyOCR recogniser (required) |
+| `RealESRGAN_x4plus.pth` | 67,040,969 | `4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1` | restoration lab only (optional) |
+
+Without the first two the app falls back to pretrained EasyOCR and YOLOv8n, which read Indian plates poorly. The training sections below reproduce both checkpoints from the prepared dataset.
 
 ### 3. Start the app
 
@@ -308,11 +318,13 @@ These are YOLO validation metrics from training, not an independent test-set cla
 | Validation exact match | 63.64% | **76.36%** |
 | Validation character error rate | 17.02% | **8.64%** |
 
-These are the numbers for the currently shipped checkpoint (`models/plate_ocr.pth`, the combined-data retrain) evaluated through the full pipeline, which includes the perspective-rectification candidate and per-row candidates. The hybrid rescue is a conservative inference-time ensemble. If the detector + OCR base reading is already common-format with an engine score of at least **0.55**, it is kept. Otherwise the pipeline adds direct-CRNN readings (bypassing EasyOCR's text detector), cyclic rotations that satisfy the Indian plate structure and a rectified perspective candidate, then re-runs the format-aware selector. Every detected row of at least eight characters is also its own candidate, so a stray logo row cannot destroy a clean plate row. Against the first-pass reading this pool recovered **28 additional exact rows with 1 loss** on test and **21 with 0 losses** on validation.
+**Source of truth.** These four values come from one frozen run: `reports/ocr_val_v2.csv` and `reports/ocr_final_test_v2.csv`, using the `margin_0.25` columns that match the shipped selector (`DEFAULT_RETRY_MARGIN = 0.25` in `src/anpr/selection.py`). `scripts/evaluate_final.py` aggregates the test rows into `reports/final_evaluation.json`. Other margins in the same files (for example 69.09% / 9.66% at margin 0.05 and 68.48% / 9.78% at margin 0.20) are sensitivity checks, not the shipped operating point.
 
-Review gate after rescue: the threshold is not hand-picked. `scripts/calibrate_gate.py` sweeps acceptance thresholds on the **validation** split, applies the fixed Indian plate structure, and selects the lowest threshold that keeps selective error within an 8% risk budget. That produced **0.81**, which is frozen and replayed with `--threshold 0.81`. On the **test** split this yields **58.2% coverage** and **92.7% selective accuracy** (7.3% selective error), while validation gives 62.4% coverage and 92.2% selective accuracy. The test curve is inspected only after selection; the risk target held on both splits. Re-selecting on the updated validation predictions would pick 0.78, which exceeds the 8% budget on test — the reason the operating point stays frozen instead of being re-tuned. The Intelligence view replays this curve interactively; the assistant explains the difference between exact match, CER, gate coverage and selective accuracy.
+These are the numbers for the currently shipped checkpoint (`models/plate_ocr.pth`, the combined-data retrain) evaluated through the full pipeline, which includes the perspective-rectification candidate and per-row candidates. The hybrid rescue is a conservative inference-time ensemble. If the detector + OCR base reading is already common-format with an engine score of at least **0.55**, it is kept. Otherwise the pipeline adds direct-CRNN readings (bypassing EasyOCR's text detector), cyclic rotations that satisfy the Indian plate structure and a rectified perspective candidate, then re-runs the format-aware selector. Every detected row of at least eight characters is also its own candidate, so a stray logo row cannot destroy a clean plate row. Against the first-pass reading this pool recovered **28 additional exact rows with 1 loss** on test and **21 with 0 losses** on validation; the row-level columns `original_exact_match` and `margin_0.25_exact_match` in `reports/ocr_final_test_v2.csv` and `reports/ocr_val_v2.csv` make both counts reproducible.
 
-**Uncertainty and workload.** A point estimate on 165 crops hides its own error bar. The 95% Wilson interval for the 68.48% headline is **61.04–75.08%**; character similarity (1 − CER) is **90.28%**. Per 100 plates the shipped gate auto-passes **58.2**, sends **41.8** to human review and leaves **4.24** residual errors. The separate 110-crop IURS split reads **86.36% exact at 1.72% CER (95% CI 78.71–91.56%)**, with 66.4/33.6/3.64 per 100 at the same gate.
+Review gate after rescue: the threshold is not hand-picked. `scripts/calibrate_gate.py` sweeps acceptance thresholds on the **validation** split, applies the fixed Indian plate structure, and selects the lowest threshold that keeps selective error within an 8% risk budget. That produced **0.81**, which is frozen and replayed with `--threshold 0.81`. On the **test** split this yields **58.2% coverage** and **92.7% selective accuracy** (7.3% selective error), while validation gives 62.4% coverage and 92.2% selective accuracy. The test curve is inspected only after selection; the risk target held on both splits. Re-selecting on the updated validation predictions would pick 0.78, which exceeds the 8% budget on test — the reason the operating point stays frozen instead of being re-tuned. The Intelligence view replays this curve interactively; the assistant explains the difference between exact match, CER, gate coverage and selective accuracy. The exact 0.81 point is stored in `reports/gate_curve.json` (`recommended` on validation, `test_at_recommended` on test); the coarser 0.80 row in `reports/final_evaluation.json` (58.79% / 91.75%) is a sweep sample, not the frozen gate.
+
+**Uncertainty and workload.** A point estimate on 165 crops hides its own error bar. The 95% Wilson interval for the 68.48% headline is **61.04–75.08%**; character similarity (1 − CER) is **90.28%**. Per 100 plates the shipped gate auto-passes **58.2**, sends **41.8** to human review and leaves **4.24** residual errors. The IURS domain check (110 held-out IURS crops) reads **86.36% exact at 1.72% CER (95% CI 78.71–91.56%)**, with 66.4/33.6/3.64 per 100 at the same gate. IURS rows were also used in training, so this is a within-source domain check, not an independent validation set.
 
 **Composition and repeated reads.** The 165 crops contain **97 unique plates**. The largest plate (MH02DS9365) supplies 34 crops (20.6% of the test), so the console also reports a per-plate macro average of **64.77% (95% CI 55.10–73.65%)** and accuracy without that plate (**63.36%**). On the 18 multi-crop vehicles, a character-wise majority vote lifts first-crop accuracy from **66.7% to 72.2%** (77.8% if any crop is correct). `scripts/eval_frame_vote.py` measures this offline; it is **not** wired into the production path.
 
@@ -334,9 +346,9 @@ The preparation script found 1,697 XML annotations and 1,698 image files. It rem
 | Validation | 165 | 165 | 96 |
 | Test | 165 | 165 | 97 |
 
-The split is grouped by normalized plate text and exact image hash; no plate text overlaps between train, validation and test OCR sets. Three model-name boxes (CRETA, DUSTER, TERRANO) are kept as negative detector examples. `BLUR` and `HP2020TR6255G` are excluded from OCR training and listed for review.
+The original prepared split is grouped by normalized plate text and exact image hash; train, validation and test share no plate text (verified: 0 overlap in all three pairs). Three model-name boxes (CRETA, DUSTER, TERRANO) are kept as negative detector examples. `BLUR` and `HP2020TR6255G` are excluded from OCR training and listed for review.
 
-On top of this set, 694 plates (768 single-line rows) were reconstructed from the IURS character-detection archive described in [`docs/DATASET.md`](docs/DATASET.md). The audit found no plate text shared with any original split, so `scripts/combine_ocr_datasets.py` merges both sources into `data/combined_ocr/` for recogniser training. Model selection uses the combined validation split; every reported accuracy number is still measured on the original plate-level test split only, because the IURS crops are clean frontal plates and would flatter the result.
+On top of this set, 694 plates (768 single-line rows) were reconstructed from the IURS character-detection archive described in [`docs/DATASET.md`](docs/DATASET.md); 532 rows are used for training, 126 for validation and 110 for the reported check. No full plate text is shared with the original prepared split (0 overlap between IURS test strings and prepared train). Eight IURS test crops carry degenerate fragments (`GJ01`, `GJ01T`, `GJ18`, `GJ27T`) that also occur in IURS training rows; they stay in the evaluation, and they are why the 110-crop figure is reported as a domain check rather than an independent test. `scripts/combine_ocr_datasets.py` merges both sources into `data/combined_ocr/` for recogniser training. Model selection uses the combined validation split; every reported accuracy number is still measured on the original plate-level test split only, because the IURS crops are clean frontal plates and would flatter the result.
 
 The source folder has no license/provenance document. Keep the dataset local for this academic project unless reuse and redistribution terms are confirmed.
 
@@ -392,7 +404,7 @@ The evaluator uses the same enhancement, ordering, rectification and selection c
 .\.venv\Scripts\python.exe scripts\evaluate_rectify.py --csv data\prepared_corrected\ocr\test.csv --output reports\rectify_test_v2.json
 ```
 
-Measured with the pre-v2 checkpoint: validation exact match **72.12% → 75.15%** (165 crops; 6 gained, 1 lost) and test **66.06% → 66.67%** (165 crops; 2 gained, 1 lost). Re-checked with the shipped v2 checkpoint: validation **70.30% → 75.15%** (8 gained, 0 lost) and test **68.48% → 68.48%** (1 gained, 1 lost). It stays in the pipeline because it is clearly positive on validation and neutral (not harmful) on test; the reports keep both the wins and the loss rather than hiding them. These ablation numbers predate the per-row candidate addition. `scripts/evaluate_rectify.py` can be pointed at the combined manifests to re-check it after any future model change.
+Measured with the pre-v2 checkpoint: validation exact match **72.12% → 75.15%** (165 crops; 6 gained, 1 lost) and test **66.06% → 66.67%** (165 crops; 2 gained, 1 lost). Re-checked with the shipped v2 checkpoint: validation **70.30% → 75.15%** (8 gained, 0 lost) and test **68.48% → 68.48%** (1 gained, 1 lost). These are rectification-off-versus-on ablation numbers, not the headline validation score (76.36%). It stays in the pipeline because it is clearly positive on validation and neutral (not harmful) on test; the reports keep both the wins and the loss rather than hiding them. These ablation numbers predate the per-row candidate addition. `scripts/evaluate_rectify.py` can be pointed at the combined manifests to re-check it after any future model change.
 
 ### Cold test protocol
 
@@ -534,4 +546,4 @@ See [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md), [`docs/DEMO_SCRIPT.md`
 
 ## License and attribution
 
-Academic capstone. The bundled dataset has no confirmed redistribution licence; keep it local. The external DataCluster sample is CC BY-NC-ND 4.0 for academic, non-commercial evaluation with attribution. Do not redistribute it or use it commercially.
+The code is released under the MIT licence — see [`LICENSE`](LICENSE). Model weights and datasets are **not** covered by that licence and are not redistributed in this repository. The bundled dataset has no confirmed redistribution licence; keep it local. The external DataCluster sample is CC BY-NC-ND 4.0 for academic, non-commercial evaluation with attribution. The IURS ANPRIND archive is CC BY 4.0; the reconstructed crops are used locally for training only.
