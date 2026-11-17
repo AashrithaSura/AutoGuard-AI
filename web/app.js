@@ -577,11 +577,11 @@ function scanView() {
         <aside class="scan-side">
           <section class="panel side-card">
             <p class="eyebrow">PIPELINE</p>
-            <div class="how-step"><span class="how-num">1</span><div><strong>Detect</strong></div></div>
-            <div class="how-step"><span class="how-num">2</span><div><strong>Diagnose</strong></div></div>
-            <div class="how-step"><span class="how-num">3</span><div><strong>Read</strong></div></div>
-            <div class="how-step"><span class="how-num">4</span><div><strong>Heal</strong></div></div>
-            <div class="how-step"><span class="how-num">5</span><div><strong>Gate</strong><span>${gate.toFixed(2)}</span></div></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Detect</strong></div><span>Locate plate regions in each frame.</span></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Diagnose</strong></div><span>Flag blur, glare and weak crops.</span></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Read</strong></div><span>Recognise characters on the plate.</span></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Heal</strong></div><span>Enhance weak crops and retry the read.</span></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Gate</strong><b class="step-gate">${gate.toFixed(2)}</b></div><span>Pass confident reads, queue the rest.</span></div>
           </section>
           <section class="panel side-card">
             <p class="eyebrow">LEDGER SNAPSHOT · 30 DAYS</p>
