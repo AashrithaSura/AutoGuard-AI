@@ -519,7 +519,6 @@ If you use pytest:
 - The database stores the derived plate text, scores, quality flags and a compact crop preview.
 - Number plates can identify vehicles and, indirectly, people. A real deployment needs a lawful basis, access control, a retention period, and a correction/deletion process.
 - The interface never presents a reading as certain. Passing the review gate is a **candidate** status, not a guarantee. OCR engine scores are ranking signals, not probabilities.
-- Demo rows are synthetic and clearly labelled. They must not be reported as evaluation data.
 
 ---
 
@@ -531,16 +530,6 @@ If you use pytest:
 4. Recovery cannot invent characters that are absent from the pixels. "Manual review" is the honest output in those cases.
 5. The assistant is only as good as the stored data and the knowledge documents. It is designed to say "not found" rather than guess.
 6. SQLite is appropriate for a capstone and a single-lab deployment; it is not a multi-tenant production database.
-
----
-
-## What to say in a viva
-
-The strongest technical story is not "I trained YOLO". It is:
-
-> I measured a failure mode, changed the decision policy, and measured again. The system knows when it does not know, attempts a bounded recovery, and escalates to a human. The assistant is grounded in the same records, so it can explain the failure rather than hallucinate a reason.
-
-See [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md), [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) and [`docs/VIVA_QUESTIONS.md`](docs/VIVA_QUESTIONS.md).
 
 ---
 
