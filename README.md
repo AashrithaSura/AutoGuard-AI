@@ -6,6 +6,8 @@ AutoGuard AI is a still-image Indian ANPR capstone. It detects number plates wit
 
 The important design choice is that the assistant is **not** a generic chatbot bolted onto a detector. It answers from the same SQLite database that powers the console, and it retrieves explanations from the project's own Markdown knowledge base. An LLM is optional; the system remains useful offline without one.
 
+![AutoGuard AI scan desk](docs/screenshots/scan.png)
+
 ---
 
 ## What is implemented
@@ -58,7 +60,7 @@ Five task-based views share a gradient top navigation and a page header. A comma
 
 **Scan desk (`#/scan`)**
 
-![Scan desk with a short what-it-is intro, intake dropzone and latest reads](docs/screenshots/scan.png)
+Drag-and-drop or camera intake; each result shows the annotated frame, padded crop, character cells, retry trace and gate decision.
 
 **Review queue (`#/review`)**
 
@@ -132,7 +134,7 @@ The ML imports are lazy. The console (scan desk, review queue, archive, intellig
 
 ### 1. Create the environment
 
-From `C:\Users\suraa\Desktop\ANPR2\self-healing-anpr`:
+From the repository root:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
@@ -148,7 +150,11 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 ```
 
-### 2. Start the app
+### 2. Add the model checkpoints
+
+Trained weights are binary and are not committed. Copy `plate_ocr.pth` and `plate_detector.pt` into `models/`; without them the app falls back to pretrained EasyOCR and YOLOv8n, which read Indian plates poorly. The training and rollback sections below reproduce both checkpoints.
+
+### 3. Start the app
 
 ```powershell
 .\run.ps1
@@ -162,7 +168,7 @@ Or directly:
 
 Open **http://127.0.0.1:8000**.
 
-### 3. Optional: seed demo data
+### 4. Optional: seed demo data
 
 The console looks empty on a fresh database. Seed clearly labelled synthetic rows:
 
@@ -178,7 +184,7 @@ Remove them at any time:
 
 Demo rows carry `source='demo'`. The top navigation's **Demo data** toggle includes or excludes them everywhere; they are never counted as an evaluation result.
 
-### 4. Verify without the ML stack
+### 5. Verify without the ML stack
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\selfcheck.py
@@ -404,7 +410,7 @@ The internal test split was inspected during development, so it cannot be a pris
 
 ### Rolling back
 
-A verbatim pre-v2 snapshot of the code lives in `attic/pre_v2_20261117/` with restore instructions in `attic/pre_v2_20261117/RESTORE.md`. The previous recogniser is backed up at `models/attic/plate_ocr_pre_v2.pth`. This repository is not the git root (the desktop folder is), so restore from the snapshot rather than from git history.
+A verbatim pre-v2 snapshot of the code lives in `attic/pre_v2_20261117/` with restore instructions in `attic/pre_v2_20261117/RESTORE.md`; the previous recogniser is backed up at `models/attic/plate_ocr_pre_v2.pth`. Both folders are local-only and excluded from git.
 
 ### Corrected labels
 
@@ -460,19 +466,19 @@ self-healing-anpr/
 │   ├── test_recovery.py        hybrid rescue policy
 │   ├── test_benchmark.py       intervals, workload and report composition
 │   └── test_api.py             FastAPI contract tests
-├── models/                     plate_detector.pt, plate_ocr.pth
-├── models/attic/               pre-v2 OCR weights kept for rollback
+├── models/                     trained checkpoints (not committed; copy plate_ocr.pth + plate_detector.pt here)
 ├── reports/                    evaluation CSVs + JSON, gate_curve.json
-├── attic/                      pre-v3 design rollback snapshot
 ├── runs/                       detector training summary (results.csv, args.yaml)
-├── data/                       corrected dataset + app DB (raw sources live in ANPR2/)
-├── docs/                       architecture, API, report, demo, viva
+├── data/                       committed manifests + local dataset and app DB
+├── docs/                       architecture, API, report, demo, viva, screenshots
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── setup.ps1
 ├── run.ps1
 └── README.md
 ```
+
+Local-only folders (`attic/`, `models/attic/`, `data/prepared_corrected/`, `data/iurs_plates/`) are excluded by `.gitignore`.
 
 ---
 
