@@ -1438,10 +1438,10 @@ function renderRestoreTab(root) {
       </section>
       <aside class="panel panel-pad">
         <div class="panel-head"><div><h2>What this tests</h2></div></div>
-        <div class="how-step"><span class="how-num">1</span><div><strong>Bicubic 4×</strong></div></div>
-        <div class="how-step"><span class="how-num">2</span><div><strong>Real-ESRGAN 4×</strong></div></div>
-        <div class="how-step"><span class="how-num">3</span><div><strong>RefineNet</strong></div></div>
-        <div class="how-step"><span class="how-num">4</span><div><strong>OCR before / after</strong></div></div>
+        <div class="how-step pipeline-step"><div class="step-head"><strong>Bicubic 4×</strong></div><span>Classic upscaling baseline for comparison.</span></div>
+        <div class="how-step pipeline-step"><div class="step-head"><strong>Real-ESRGAN 4×</strong></div><span>Learned super-resolution on the same crop.</span></div>
+        <div class="how-step pipeline-step"><div class="step-head"><strong>RefineNet</strong></div><span>Residual pass trained on real plate crops.</span></div>
+        <div class="how-step pipeline-step"><div class="step-head"><strong>OCR before / after</strong></div><span>Compares the read before and after restoration.</span></div>
       </aside>
     </div>
     <div id="restore-results">${state.restoreResult ? renderRestoration(state.restoreResult) : ''}</div>`;
