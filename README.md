@@ -6,7 +6,6 @@ AutoGuard AI is a still-image Indian ANPR capstone. It detects number plates wit
 
 The important design choice is that the assistant is **not** a generic chatbot bolted onto a detector. It answers from the same SQLite database that powers the console, and it retrieves explanations from the project's own Markdown knowledge base. An LLM is optional; the system remains useful offline without one.
 
-> **Capstone prototype, not production-ready.** The internal test split was inspected during development, so the headline numbers are development estimates. On the 165-crop test set, 41.8% of readings go to human review and 7.3% of auto-passed readings are still wrong. See [Evaluation](#evaluation-measured-with-caveats) and the [report](docs/AutoGuard_AI_Capstone_Report.pdf).
 
 ![AutoGuard AI scan desk](docs/screenshots/scan.png)
 
