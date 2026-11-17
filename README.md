@@ -40,10 +40,8 @@ The important design choice is that the assistant is **not** a generic chatbot b
 - [`docs/TRAINING_PLAYBOOK.md`](docs/TRAINING_PLAYBOOK.md) — local restoration and character-detector training.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — pipeline and data flow.
 - [`docs/API.md`](docs/API.md) — endpoint reference.
-- [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md) — full report.
 - [`docs/AutoGuard_AI_Capstone_Report.pdf`](docs/AutoGuard_AI_Capstone_Report.pdf) — printable PDF of the report.
 - [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) — demo walkthrough.
-- [`docs/VIVA_QUESTIONS.md`](docs/VIVA_QUESTIONS.md) — viva preparation.
 
 Rebuild the PDF after editing the report Markdown (uses the locally installed Chrome, no extra Python packages):
 
