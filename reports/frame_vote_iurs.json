@@ -1,0 +1,92 @@
+{
+  "plates": 77,
+  "frames": 95,
+  "all_plates": {
+    "first_frame": {
+      "correct": 68,
+      "samples": 77,
+      "rate": 0.8831,
+      "ci95": [
+        0.7925,
+        0.9373
+      ]
+    },
+    "majority_vote": {
+      "correct": 68,
+      "samples": 77,
+      "rate": 0.8831,
+      "ci95": [
+        0.7925,
+        0.9373
+      ]
+    },
+    "any_crop": {
+      "correct": 68,
+      "samples": 77,
+      "rate": 0.8831,
+      "ci95": [
+        0.7925,
+        0.9373
+      ]
+    },
+    "gated_vote": {
+      "correct": 68,
+      "samples": 77,
+      "rate": 0.8831,
+      "ci95": [
+        0.7925,
+        0.9373
+      ]
+    }
+  },
+  "multi_frame_plates": {
+    "plates": 18,
+    "frames": 36,
+    "first_frame": {
+      "correct": 18,
+      "samples": 18,
+      "rate": 1.0,
+      "ci95": [
+        0.8241,
+        1.0
+      ]
+    },
+    "majority_vote": {
+      "correct": 18,
+      "samples": 18,
+      "rate": 1.0,
+      "ci95": [
+        0.8241,
+        1.0
+      ]
+    },
+    "any_crop": {
+      "correct": 18,
+      "samples": 18,
+      "rate": 1.0,
+      "ci95": [
+        0.8241,
+        1.0
+      ]
+    }
+  },
+  "singleton_plates": {
+    "plates": 59,
+    "first_frame": {
+      "correct": 50,
+      "samples": 59,
+      "rate": 0.8475,
+      "ci95": [
+        0.7348,
+        0.9176
+      ]
+    }
+  },
+  "app": "AutoGuard AI",
+  "source": "reports/ocr_iurs_test_v2.csv",
+  "prediction_column": "margin_0.25_prediction",
+  "score_column": "margin_0.25_score",
+  "gate_threshold": 0.81,
+  "skipped_partial_labels": 15,
+  "note": "Groups crops that share a ground-truth plate (multiple views of one vehicle), votes per character position, and compares against the first frame. Only plates with full labels are counted."
+}

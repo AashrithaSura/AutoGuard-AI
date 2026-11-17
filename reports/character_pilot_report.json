@@ -1,0 +1,27 @@
+{
+  "pilot": "IURS character detector",
+  "images": {
+    "train": 500,
+    "valid": 500,
+    "test": 340
+  },
+  "classes": 36,
+  "epochs": 5,
+  "imgsz": 640,
+  "batch": 8,
+  "device": "cpu",
+  "metrics": {
+    "precision": 0.393,
+    "recall": 0.0894,
+    "mAP50": 0.0502,
+    "mAP50_95": 0.0268
+  },
+  "notes": [
+    "Character boxes are small at 640x640.",
+    "The dataset contains augmented flips and rotations.",
+    "500 images and 5 epochs are not enough for 36 classes.",
+    "High character mAP alone would not guarantee plate-string accuracy."
+  ],
+  "decision": "reject",
+  "reason": "Character mAP is far too low for plate-string assembly. Do not scale this pilot blindly."
+}

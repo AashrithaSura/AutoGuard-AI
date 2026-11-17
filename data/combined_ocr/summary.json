@@ -1,0 +1,23 @@
+{
+  "train": {
+    "rows": 1845,
+    "origin": {
+      "data/prepared_corrected": 1313,
+      "data/iurs_plates": 532
+    }
+  },
+  "val": {
+    "rows": 291,
+    "origin": {
+      "data/prepared_corrected": 165,
+      "data/iurs_plates": 126
+    }
+  },
+  "test": {
+    "rows": 275,
+    "origin": {
+      "data/prepared_corrected": 165,
+      "data/iurs_plates": 110
+    }
+  }
+}

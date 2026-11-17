@@ -1,0 +1,73 @@
+{
+  "samples": 165,
+  "decoder": "beamsearch",
+  "beam_width": 10,
+  "rescue": {
+    "enabled": true,
+    "rule": "Keep a common-format base reading with engine score >= 0.55; otherwise add direct-CRNN, rotated and per-row candidates.",
+    "trusted_samples": 119
+  },
+  "original": {
+    "exact_match_accuracy": 0.6363636363636364,
+    "character_error_rate": 0.17018554062699937
+  },
+  "confidence_best": {
+    "exact_match_accuracy": 0.6909090909090909,
+    "character_error_rate": 0.10556621880998081
+  },
+  "format_aware_by_margin": {
+    "0.05": {
+      "exact_match_accuracy": 0.7575757575757576,
+      "character_error_rate": 0.08765195137555983
+    },
+    "0.10": {
+      "exact_match_accuracy": 0.7575757575757576,
+      "character_error_rate": 0.08765195137555983
+    },
+    "0.15": {
+      "exact_match_accuracy": 0.7515151515151515,
+      "character_error_rate": 0.08829174664107485
+    },
+    "0.20": {
+      "exact_match_accuracy": 0.7515151515151515,
+      "character_error_rate": 0.08829174664107485
+    },
+    "0.25": {
+      "exact_match_accuracy": 0.7636363636363637,
+      "character_error_rate": 0.08637236084452975
+    }
+  },
+  "review_gate_by_margin": {
+    "0.05": {
+      "score_threshold": 0.81,
+      "eligible_samples": 105,
+      "coverage": 0.6363636363636364,
+      "exact_match_accuracy_when_eligible": 0.9047619047619048
+    },
+    "0.10": {
+      "score_threshold": 0.81,
+      "eligible_samples": 105,
+      "coverage": 0.6363636363636364,
+      "exact_match_accuracy_when_eligible": 0.9047619047619048
+    },
+    "0.15": {
+      "score_threshold": 0.81,
+      "eligible_samples": 105,
+      "coverage": 0.6363636363636364,
+      "exact_match_accuracy_when_eligible": 0.9047619047619048
+    },
+    "0.20": {
+      "score_threshold": 0.81,
+      "eligible_samples": 105,
+      "coverage": 0.6363636363636364,
+      "exact_match_accuracy_when_eligible": 0.9047619047619048
+    },
+    "0.25": {
+      "score_threshold": 0.81,
+      "eligible_samples": 103,
+      "coverage": 0.6242424242424243,
+      "exact_match_accuracy_when_eligible": 0.9223300970873787
+    }
+  },
+  "note": "Uses the same enhancement code as the app. Choose thresholds on validation data and freeze them before final test evaluation. OCR engine scores are not probabilities."
+}

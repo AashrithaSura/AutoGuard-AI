@@ -1,0 +1,15 @@
+{
+  "csv": "ocr/test.csv",
+  "margin": 0.25,
+  "samples": 165,
+  "quad_found": 145,
+  "base_correct": 113,
+  "rectified_alone_correct": 66,
+  "with_rectified_correct": 113,
+  "gained": 1,
+  "lost": 1,
+  "changed": 3,
+  "base_correct_rate": 0.6848,
+  "with_rectified_correct_rate": 0.6848,
+  "rectified_alone_correct_rate": 0.4
+}

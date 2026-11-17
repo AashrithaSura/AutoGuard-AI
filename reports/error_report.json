@@ -1,0 +1,207 @@
+{
+  "samples": 165,
+  "failures": 52,
+  "failure_rate": 0.3152,
+  "categories": {
+    "structural": 4,
+    "other": 12,
+    "single_character": 17,
+    "two_characters": 13,
+    "likely_label_error": 2,
+    "low_confidence": 4
+  },
+  "top_substitutions": [
+    [
+      "4->A",
+      3
+    ],
+    [
+      "N->H",
+      2
+    ],
+    [
+      "9->3",
+      2
+    ],
+    [
+      "1->T",
+      2
+    ],
+    [
+      "8->0",
+      2
+    ],
+    [
+      "M->A",
+      2
+    ],
+    [
+      "1->L",
+      2
+    ],
+    [
+      "M->H",
+      2
+    ],
+    [
+      "2->9",
+      2
+    ],
+    [
+      "G->R",
+      1
+    ],
+    [
+      "D->0",
+      1
+    ],
+    [
+      "9->C",
+      1
+    ],
+    [
+      "8->2",
+      1
+    ],
+    [
+      "2->3",
+      1
+    ],
+    [
+      "0->1",
+      1
+    ],
+    [
+      "4->1",
+      1
+    ],
+    [
+      "P->E",
+      1
+    ],
+    [
+      "4->6",
+      1
+    ],
+    [
+      "Q->D",
+      1
+    ],
+    [
+      "A->F",
+      1
+    ],
+    [
+      "Z->Y",
+      1
+    ],
+    [
+      "6->G",
+      1
+    ],
+    [
+      "9->5",
+      1
+    ],
+    [
+      "5->6",
+      1
+    ],
+    [
+      "6->8",
+      1
+    ]
+  ],
+  "worst_plates": [
+    {
+      "plate": "MH01BM4824",
+      "correct": 0,
+      "crops": 3,
+      "accuracy": 0.0
+    },
+    {
+      "plate": "MH02CW8226",
+      "correct": 0,
+      "crops": 2,
+      "accuracy": 0.0
+    },
+    {
+      "plate": "MH02CR4364",
+      "correct": 0,
+      "crops": 3,
+      "accuracy": 0.0
+    },
+    {
+      "plate": "MH02CR8276",
+      "correct": 0,
+      "crops": 2,
+      "accuracy": 0.0
+    },
+    {
+      "plate": "TN19TC91",
+      "correct": 1,
+      "crops": 2,
+      "accuracy": 0.5
+    },
+    {
+      "plate": "TN21AU7234",
+      "correct": 1,
+      "crops": 2,
+      "accuracy": 0.5
+    },
+    {
+      "plate": "MH02DQ0196",
+      "correct": 3,
+      "crops": 6,
+      "accuracy": 0.5
+    },
+    {
+      "plate": "MH02FN2783",
+      "correct": 5,
+      "crops": 9,
+      "accuracy": 0.556
+    },
+    {
+      "plate": "MH02DS9365",
+      "correct": 30,
+      "crops": 34,
+      "accuracy": 0.882
+    },
+    {
+      "plate": "TN21AT0492",
+      "correct": 3,
+      "crops": 3,
+      "accuracy": 1.0
+    },
+    {
+      "plate": "TN66U8215",
+      "correct": 2,
+      "crops": 2,
+      "accuracy": 1.0
+    },
+    {
+      "plate": "MH02CB4545",
+      "correct": 2,
+      "crops": 2,
+      "accuracy": 1.0
+    },
+    {
+      "plate": "TN74AL5074",
+      "correct": 2,
+      "crops": 2,
+      "accuracy": 1.0
+    },
+    {
+      "plate": "KL43B2344",
+      "correct": 2,
+      "crops": 2,
+      "accuracy": 1.0
+    },
+    {
+      "plate": "MH20BN3525",
+      "correct": 4,
+      "crops": 4,
+      "accuracy": 1.0
+    }
+  ]
+}

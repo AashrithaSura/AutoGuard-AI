@@ -1,0 +1,38 @@
+{
+  "samples": 165,
+  "methods": {
+    "lr": {
+      "samples": 165,
+      "exact_match": 0.2364,
+      "character_error_rate": 0.3135,
+      "exact_n": 39,
+      "psnr": 23.918,
+      "ssim": 0.7344
+    },
+    "bicubic": {
+      "samples": 165,
+      "exact_match": 0.2485,
+      "character_error_rate": 0.3085,
+      "exact_n": 41,
+      "psnr": 23.918,
+      "ssim": 0.7344
+    },
+    "esrgan": {
+      "samples": 165,
+      "exact_match": 0.1758,
+      "character_error_rate": 0.3655,
+      "exact_n": 29,
+      "psnr": 19.409,
+      "ssim": 0.6552
+    },
+    "refined": {
+      "samples": 165,
+      "exact_match": 0.1818,
+      "character_error_rate": 0.353,
+      "exact_n": 30,
+      "psnr": 20.502,
+      "ssim": 0.7039
+    }
+  },
+  "note": "Test crops degraded synthetically (blur, 4x downsample, noise, JPEG). OCR uses the fine-tuned plate recogniser directly."
+}
