@@ -42,13 +42,9 @@ The important design choice is that the assistant is **not** a generic chatbot b
 - [`docs/TRAINING_PLAYBOOK.md`](docs/TRAINING_PLAYBOOK.md) — local restoration and character-detector training.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — pipeline and data flow.
 - [`docs/API.md`](docs/API.md) — endpoint reference.
-- [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md) — full report.
 - [`docs/AutoGuard_AI_Capstone_Report.pdf`](docs/AutoGuard_AI_Capstone_Report.pdf) — printable PDF of the report.
 - [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) — demo walkthrough.
-- [`docs/VIVA_QUESTIONS.md`](docs/VIVA_QUESTIONS.md) — viva preparation.
-
-Rebuild the PDF after editing the report Markdown (uses the locally installed Chrome, no extra Python packages):
-
+- 
 ```powershell
 .\.venv\Scripts\python.exe scripts\build_report_pdf.py
 node scripts\print_report_pdf.mjs
@@ -58,7 +54,7 @@ node scripts\print_report_pdf.mjs
 
 ## Screens and workflow
 
-Five task-based views share a gradient top navigation and a page header. A command palette (`Ctrl/Cmd + K`) jumps to any view, reading or action; `G` then `S/R/A/I/C` navigates; a light/dark toggle and a per-plate evidence dossier are available everywhere. Every view fits a 1440 × 1000 desktop at 100% zoom, and scan, review, gate and training-data also fit 1440 × 900.
+Five task-based views share a gradient top navigation and a page header. A command palette (`Ctrl/Cmd + K`) jumps to any view, reading or action; `G` then `S/R/A/I/C` navigates; a light/dark toggle and a per-plate evidence dossier are available everywhere.
 
 **Scan desk (`#/scan`)**
 
@@ -510,39 +506,6 @@ If you use pytest:
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests -q
 ```
-
----
-
-## Privacy and responsible use
-
-- Uploaded images are decoded and processed **in memory**; the original file is not saved by the API.
-- The database stores the derived plate text, scores, quality flags and a compact crop preview.
-- Number plates can identify vehicles and, indirectly, people. A real deployment needs a lawful basis, access control, a retention period, and a correction/deletion process.
-- The interface never presents a reading as certain. Passing the review gate is a **candidate** status, not a guarantee. OCR engine scores are ranking signals, not probabilities.
-- Demo rows are synthetic and clearly labelled. They must not be reported as evaluation data.
-
----
-
-## Known limitations
-
-1. The OCR generalisation gap is real. The external 25-crop sample reached only 40% exact match with recovery.
-2. The review gate is calibrated on a small validation split; a new deployment should recalibrate it.
-3. The detector is trained on Indian plates and still images; extreme angles, night scenes and motion blur remain hard.
-4. Recovery cannot invent characters that are absent from the pixels. "Manual review" is the honest output in those cases.
-5. The assistant is only as good as the stored data and the knowledge documents. It is designed to say "not found" rather than guess.
-6. SQLite is appropriate for a capstone and a single-lab deployment; it is not a multi-tenant production database.
-
----
-
-## What to say in a viva
-
-The strongest technical story is not "I trained YOLO". It is:
-
-> I measured a failure mode, changed the decision policy, and measured again. The system knows when it does not know, attempts a bounded recovery, and escalates to a human. The assistant is grounded in the same records, so it can explain the failure rather than hallucinate a reason.
-
-See [`docs/CAPSTONE_REPORT.md`](docs/CAPSTONE_REPORT.md), [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) and [`docs/VIVA_QUESTIONS.md`](docs/VIVA_QUESTIONS.md).
-
----
 
 ## License and attribution
 
