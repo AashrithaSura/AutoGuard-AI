@@ -536,8 +536,6 @@ function scanView() {
   state.scanPreviews = [];
   state.scanResults = [];
   const view = $('#view');
-  const ocr = state.benchmark?.ocr || {};
-  const gate = Number(ocr.gate_threshold || 0.81);
   view.innerHTML = `
     <div class="scan-console">
       <section class="panel scan-intro">
@@ -581,7 +579,7 @@ function scanView() {
             <div class="how-step pipeline-step"><div class="step-head"><strong>Diagnose</strong></div><span>Flag blur, glare and weak crops.</span></div>
             <div class="how-step pipeline-step"><div class="step-head"><strong>Read</strong></div><span>Recognise characters on the plate.</span></div>
             <div class="how-step pipeline-step"><div class="step-head"><strong>Heal</strong></div><span>Enhance weak crops and retry the read.</span></div>
-            <div class="how-step pipeline-step"><div class="step-head"><strong>Gate</strong><b class="step-gate">${gate.toFixed(2)}</b></div><span>Pass confident reads, queue the rest.</span></div>
+            <div class="how-step pipeline-step"><div class="step-head"><strong>Gate</strong></div><span>Pass confident reads, queue the rest.</span></div>
           </section>
           <section class="panel side-card">
             <p class="eyebrow">LEDGER SNAPSHOT · 30 DAYS</p>

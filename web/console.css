@@ -638,7 +638,6 @@ code {
 .how-step span { font-size: .64rem; color: var(--muted); line-height: 1.4; }
 .pipeline-step { display: block; padding: 5px 0; }
 .pipeline-step .step-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.pipeline-step .step-head .step-gate { font: 700 .64rem/1 var(--mono); color: var(--ink-2); }
 .pipeline-step > span { display: block; margin-top: 1px; font-size: .6rem; color: var(--muted); line-height: 1.35; }
 .bench-lines { display: flex; flex-direction: column; gap: 5px; }
 .bench-line { display: flex; justify-content: space-between; gap: 10px; font-size: .67rem; color: var(--muted); }
