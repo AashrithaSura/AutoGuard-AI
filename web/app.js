@@ -551,6 +551,10 @@ function scanView() {
           <div class="intro-step"><span class="how-num">2</span><div><strong>Analyze the batch</strong><span>Detection, OCR and healing run automatically.</span></div></div>
           <div class="intro-step"><span class="how-num">3</span><div><strong>Verify the read</strong><span>Confirm the text, correct it, or open the dossier.</span></div></div>
         </div>
+        <div class="scan-plate-visual" aria-hidden="true">
+          <div class="plate-mock"><span>MH 12 AB 3456</span><i class="sweep"></i></div>
+          <div class="plate-visual-caption"><span>DETECT</span><span>READ</span><span>HEAL</span><span>GATE</span></div>
+        </div>
       </section>
       <div class="scan-grid">
         <section class="panel intake-card">

@@ -444,8 +444,8 @@ code {
 /* ------------------------------------------------------------------ scan intro */
 .scan-intro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) 190px;
+  gap: 20px;
   align-items: center;
   padding: 14px 20px;
   margin-bottom: 14px;
@@ -458,6 +458,33 @@ code {
 .intro-step div { min-width: 0; }
 .intro-step strong { display: block; font-size: .72rem; }
 .intro-step span { display: block; margin-top: 2px; font-size: .64rem; color: var(--muted); line-height: 1.4; }
+
+.scan-plate-visual { justify-self: end; align-self: center; width: 190px; }
+.plate-mock {
+  position: relative;
+  aspect-ratio: 2.5 / 1;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #fbfbf7, #e7e7dd);
+  border: 2px solid #d5d5c9;
+  box-shadow: 0 12px 26px rgba(23, 23, 53, .18), inset 0 0 0 1px rgba(0, 0, 0, .05);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.plate-mock span { font: 800 .92rem/1 var(--mono); letter-spacing: .12em; color: #22223c; }
+.plate-mock::before, .plate-mock::after { content: ""; position: absolute; width: 13px; height: 13px; border: 2px solid var(--brand-2); }
+.plate-mock::before { top: 7px; left: 7px; border-right: 0; border-bottom: 0; }
+.plate-mock::after { bottom: 7px; right: 7px; border-left: 0; border-top: 0; }
+.sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 38%;
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0), rgba(99, 102, 241, .5), rgba(99, 102, 241, 0));
+  mix-blend-mode: multiply;
+  animation: sweep 3.4s ease-in-out infinite;
+}
+.plate-visual-caption { display: flex; justify-content: space-between; margin-top: 6px; font: 500 .56rem/1 var(--mono); letter-spacing: .06em; color: var(--muted-2); }
 
 /* ------------------------------------------------------------------ scan console */
 .scan-console { display: flex; flex-direction: column; height: 100%; }
@@ -1253,6 +1280,8 @@ code {
   .clock { display: none; }
   .brand-name { display: none; }
   .stat-tile small { display: none; }
+  .scan-intro { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .scan-plate-visual { display: none; }
   .scan-grid { grid-template-columns: minmax(0, 1.5fr) minmax(260px, .9fr); }
   .plate-result { grid-template-columns: 260px minmax(0, 1fr); }
   .ledger-head, .ledger-row { grid-template-columns: minmax(140px, 1.2fr) 120px 100px minmax(100px, 1fr) 86px; }
@@ -1314,3 +1343,8 @@ code {
 @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes slide-in { from { transform: translateX(30px); opacity: .6; } to { transform: none; opacity: 1; } }
 @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+@keyframes sweep { 0%, 100% { top: -38%; } 50% { top: 100%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep { animation: none; top: 42%; }
+}
